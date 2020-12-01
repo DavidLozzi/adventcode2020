@@ -1,1 +1,0 @@
-# adventcode2020

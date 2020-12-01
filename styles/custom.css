@@ -1,4 +1,9 @@
 /* skeleton overrides */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 300; }
+
 /* Larger than phablet */
 @media (min-width: 550px) {
   h1 { font-size: 4.0rem; }
@@ -46,6 +51,7 @@ table {
   overflow: scroll;
 }
 .credits {
+  margin-top: 4rem;
   font-size: 80%;
   color: #333;
 }

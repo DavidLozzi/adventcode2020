@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/png" href="../icon/adventcodelogo.png">
+
+  <title>Advent of Code - Day 3</title>
+
+  <!-- styling from getskeleton.com -->
+  <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="../styles/normalize.css">
+  <link rel="stylesheet" href="../styles/skeleton.css">
+  <link rel="stylesheet" href="../styles/custom.css">
+
+  <!--  syntax highlighting from highlight.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+
+  <script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+  </script>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <h2>Advent of Code, Day 3: Toboggan Trajectory</h2>
+        <a href="https://adventofcode.com/2020/day/3" target="_blank">Go to Day 3 Challenge</a> | <a
+          href="../index.html">Go to index</a><br />
+        I ran this code in the devtoolbar in Chrome, and the answers were simply outputted to the console.
+        <a href="https://davidlozzi.com/2020/12/03/advent-of-code-day-3/">Learn more about my solution</a>.
+
+        <h4>Part I</h4>
+        <div>"You start on the open square (.) in the top-left corner and need to reach the bottom (below the bottom-most row on your map). 
+        The toboggan can only follow a few specific slopes (you opted for a cheaper model that prefers rational numbers); start by counting 
+        all the trees you would encounter for the slope right 3, down 1." <a href="https://adventofcode.com/2020/day/3" target="_blank">ref</a>
+        </div>
+        <pre><code class="js">var nums = window.document.getElementsByTagName("pre")[0]
+nums = nums.innerText.split('\n')
+var columnCounter = 0
+var treeCounter = 0
+nums.forEach((row, index) => {
+    var fullRow = row.repeat(40)
+    if(fullRow.substring(columnCounter,columnCounter+1) === '#') {
+        console.error('tree hit row:', index, 'column:', columnCounter)
+        treeCounter++
+    }
+    columnCounter += 3
+})
+console.warn('total trees', treeCounter)</code></pre>
+        <h4>Part II</h4>
+        <div>"Time to check the rest of the slopes - you need to minimize the probability of a sudden arboreal stop, after all."
+         <a href="https://adventofcode.com/2020/day/3"
+            target="_blank">ref</a></div>
+        <pre><code class="js">var nums = window.document.getElementsByTagName("pre")[0]
+nums = nums.innerText.split('\n')
+var slopes = [{ right: 1, down: 1 },{ right: 3, down: 1 },{ right: 5, down: 1 },{ right: 7, down: 1 },{ right: 1, down: 2}]
+var total = 1
+slopes.forEach(slope => {
+    var columnCounter = 0
+    var treeCounter = 0
+    nums.forEach((row, index) => {
+        if(index % slope.down === 0) {
+            var fullRow = row.repeat(100)
+            if(fullRow.substring(columnCounter,columnCounter+1) === '#') {
+                treeCounter++
+            }
+            columnCounter += slope.right
+        }
+    })
+    console.warn('total trees for', slope.right, 'x', slope.down, 'is', treeCounter)
+    total *= treeCounter
+})
+console.warn('total trees', total)</code></pre>
+      </div>
+    </div>
+    <div class="row">
+      <div class="eight columns">&nbsp;</div>
+      <div class="four columns credits">
+        Created with ❤️ by <a href="https://twitter.com/davidlozzi" target="_blank">David
+          Lozzi</a><br /><br />
+        <a href="https://adventofcode.com/" target="_blank">Advent of Code</a><br />
+        CSS provided by <a href="http://getskeleton.com/" target="_blank">Skeleton</a></br>
+        Code highlighting provided by <a href="https://highlightjs.org/" target="_blank">highlight.js</a><br /><br />
+        See a problem? Want to share how you solved it? Something else? I want to hear it! <a
+          href="https://github.com/DavidLozzi/adventcode2020/issues" target="_blank">Share here!</a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

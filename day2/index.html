@@ -43,7 +43,9 @@
           must contain a
           at least 1 time and at most 3 times." <a href="https://adventofcode.com/2020/day/2" target="_blank">ref</a>
         </div>
-        <pre><code class="js">var counter = 0;
+        <pre><code class="js">var nums = window.document.getElementsByTagName("pre")[0]
+nums = nums.innerText.split('\n')
+var counter = 0;
 nums.forEach(pwd => {
     var a = pwd.match(/([0-9]*)-([0-9]*)\s(.):\s([a-zA-Z]*)/)
     if(a && a.length > 4) {
@@ -71,7 +73,9 @@ console.log(counter, 'out of', nums.length, 'passwords are legit')</code></pre>
           "index zero"!) Exactly one of these positions must contain the given letter. Other occurrences of the
           letter are irrelevant for the purposes of policy enforcement." <a href="https://adventofcode.com/2020/day/2"
             target="_blank">ref</a></div>
-        <pre><code class="js">var counter = 0;
+        <pre><code class="js">var nums = window.document.getElementsByTagName("pre")[0]
+nums = nums.innerText.split('\n')
+var counter = 0;
 nums.forEach(pwd => {
     var a = pwd.match(/([0-9]*)-([0-9]*)\s(.):\s([a-zA-Z]*)/)
     if(a && a.length > 4) {

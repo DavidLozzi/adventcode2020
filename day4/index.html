@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/png" href="../icon/adventcodelogo.png">
+
+  <title>Advent of Code - Day 4</title>
+
+  <!-- styling from getskeleton.com -->
+  <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="../styles/normalize.css">
+  <link rel="stylesheet" href="../styles/skeleton.css">
+  <link rel="stylesheet" href="../styles/custom.css">
+
+  <!--  syntax highlighting from highlight.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+
+  <script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+  </script>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <h2>Advent of Code, Day 4: Passport Processing</h2>
+        <a href="https://adventofcode.com/2020/day/4" target="_blank">Go to Day 4 Challenge</a> | <a
+          href="../index.html">Go to index</a><br />
+        I ran this code in the devtoolbar in Chrome, and the answers were simply outputted to the console.
+        <a href="https://davidlozzi.com/2020/12/04/advent-of-code-day-4/">Learn more about my solution</a>.
+
+        <h4>Part I</h4>
+        <div>"Passport data is validated in batch files (your puzzle input). Each passport is represented as a
+          sequence of key:value pairs separated by spaces or newlines. Passports are separated by blank lines...
+          Count the number of valid passports - those that have all required fields. Treat cid as optional. In your
+          batch file, how many passports are valid?" <a href="https://adventofcode.com/2020/day/4"
+            target="_blank">ref</a>
+        </div>
+        <pre><code class="js">var data = window.document.getElementsByTagName("pre")[0].innerText
+var transformPassports = data.replace(/\n\n/ig,'LOZZI')
+var noNewLines = transformPassports.replace(/\n/ig, ' ')
+var passports = noNewLines.split('LOZZI')
+var counter = 0
+passports.forEach(p => {
+    var fields = p.trim().split(' ')
+    if(fields.length === 8) {
+        counter++
+    } else if(fields.length === 7 && p.indexOf('cid') === -1){
+        counter ++
+    }
+})
+console.log(counter)</code></pre>
+        <h4>Part II</h4>
+        <div>"You can continue to ignore the cid field, but each other field has strict rules about what values are
+          valid for automatic validation."
+          <a href="https://adventofcode.com/2020/day/4" target="_blank">ref</a></div>
+        <pre><code class="js">var data = window.document.getElementsByTagName("pre")[0].innerText
+var transformPassports = data.replace(/\n\n/ig,'LOZZI')
+var noNewLines = transformPassports.replace(/\n/ig, ' ')
+var passports = noNewLines.split('LOZZI')
+  
+var isValid = (field) => {
+  var pair = field.split(':')
+  var value = pair[1]
+  
+  switch (pair[0]) {
+      case 'byr':
+          if(value.length !== 4) return false
+          if(Number(value) >= 1920 && Number(value) <= 2002) return true
+          break
+      case 'iyr':
+          if(value.length !== 4) return false
+          if(Number(value) >= 2010 && Number(value) <= 2020) return true
+          break
+      case 'eyr':
+          if(value.length !== 4) return false
+          if(Number(value) >= 2020 && Number(value) <= 2030) return true
+          break
+      case 'hgt':
+          var height = value.match(/([0-9]*)(cm|in)/)
+          if(height) {
+              var measurement = height[2]
+              var heightVal = height[1]
+              if(measurement === 'cm') {
+                  if(Number(heightVal) >= 150 && Number(heightVal) <= 193) return true
+              }
+              if(measurement === 'in') {
+                  if(Number(heightVal) >= 59 && Number(heightVal) <= 76)return true
+              }
+          }
+          break
+      case 'hcl':
+          if(value.match(/#[0-9a-fA-F]{6}/)) return true
+          break
+      case 'ecl':
+          if(value.length !== 3) return false
+          if(value.match(/amb|blu|brn|gry|grn|hzl|oth/)) return true
+          break
+      case 'pid':
+          if(value.length !== 9) return false
+          if(Number(value)) return true
+          break
+      case 'cid':
+          return true
+          break
+      default:
+          break
+  }
+  return false
+}
+  
+var counter = 0
+passports.forEach(p => {
+    var fields = p.trim().split(' ')
+    if(fields.length === 8 || (fields.length === 7 && p.indexOf('cid') === -1)){
+        var valid = false
+        fields.every(f => {
+            valid = isValid(f)
+            return valid
+        })
+        if(valid) {counter ++ }
+    }
+})
+console.log(counter)</code></pre>
+      </div>
+    </div>
+    <div class="row">
+      <div class="eight columns">&nbsp;</div>
+      <div class="four columns credits">
+        Created with ❤️ by <a href="https://twitter.com/davidlozzi" target="_blank">David
+          Lozzi</a><br /><br />
+        <a href="https://adventofcode.com/" target="_blank">Advent of Code</a><br />
+        CSS provided by <a href="http://getskeleton.com/" target="_blank">Skeleton</a></br>
+        Code highlighting provided by <a href="https://highlightjs.org/" target="_blank">highlight.js</a><br /><br />
+        See a problem? Want to share how you solved it? Something else? I want to hear it! <a
+          href="https://github.com/DavidLozzi/adventcode2020/issues" target="_blank">Share here!</a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

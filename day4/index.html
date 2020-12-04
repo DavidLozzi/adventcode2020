@@ -120,12 +120,7 @@ var counter = 0
 passports.forEach(p => {
     var fields = p.trim().split(' ')
     if(fields.length === 8 || (fields.length === 7 && p.indexOf('cid') === -1)){
-        var valid = false
-        fields.every(f => {
-            valid = isValid(f)
-            return valid
-        })
-        if(valid) {counter ++ }
+      if(fields.every(f => isValid(f))) counter++
     }
 })
 console.log(counter)</code></pre>

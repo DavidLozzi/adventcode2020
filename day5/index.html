@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/png" href="../icon/adventcodelogo.png">
+  <!-- quick find/replace (day[\s\/-])5 -->
+  <title>Advent of Code - Day 5</title>
+
+  <!-- styling from getskeleton.com -->
+  <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="../styles/normalize.css">
+  <link rel="stylesheet" href="../styles/skeleton.css">
+  <link rel="stylesheet" href="../styles/custom.css">
+
+  <!--  syntax highlighting from highlight.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+
+  <script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+  </script>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <h2>Advent of Code, Day 5: Binary Boarding</h2>
+        <a href="https://adventofcode.com/2020/day/5" target="_blank">Go to Day 5 Challenge</a> | <a
+          href="../index.html">Go to index</a><br />
+        I ran this code in the devtoolbar in Chrome, and the answers were simply outputted to the console.
+        <a href="https://davidlozzi.com/2020/12/05/advent-of-code-day-5/">Learn more about my solution</a>.
+
+        <h4>Part I</h4>
+        <div>"You write a quick program to use your phone's camera to scan all of the nearby boarding passes
+          (your puzzle input); perhaps you can find your seat through process of elimination. Instead of zones or
+          groups, this airline uses binary space partitioning to seat people. A seat might be specified like FBFBBFFRLR,
+          where F means "front", B means "back", L means "left", and R means "right"." <a
+            href="https://adventofcode.com/2020/day/5" target="_blank">ref</a>
+        </div>
+        <pre><code class="js">var calcSeatId = (seat) => {
+  var minRow = 0
+  var maxRow = 127
+  var minCol = 0
+  var maxCol = 7;
+
+  [...seat].forEach(s => {
+      if(s === "F" || s === "B"){
+          var diffRow = maxRow - minRow
+          var halfRow = Math.ceil(diffRow/2)-1
+
+          if(s === "F") {
+              maxRow = minRow + halfRow
+          }
+          if(s === "B") {
+              minRow = maxRow - halfRow
+          }
+      }
+      if(s === "R" || s === "L"){
+          var diffCol = maxCol - minCol
+          var halfCol = Math.ceil(diffCol/2)-1
+
+          if(s === "L") {
+              maxCol = minCol+ halfCol
+          }
+          if(s === "R") {
+              minCol = maxCol - halfCol
+          }
+      }
+  })
+
+  return minRow * 8 + minCol
+}
+
+var allSeatIds = []
+seats.forEach(s => allSeatIds.push({ code: s, seatId: calcSeatId(s) }))
+
+console.log('highest seat id', allSeatIds.sort((a,b) => a.seatId < b.seatId ? 1 : -1)[0])</code></pre>
+        <h4>Part II</h4>
+        <div>"It's a completely full flight, so your seat should be the only missing boarding pass in your list.
+          However, there's a catch: some of the seats at the very front and back of the plane don't exist on this
+          aircraft, so they'll be missing from your list as well. Your seat wasn't at the very front or back, though;
+          the seats with IDs +1 and -1 from yours will be in your list."
+          <a href="https://adventofcode.com/2020/day/5" target="_blank">ref</a></div>
+        <pre><code class="js">allSeatIds.sort((a,b) => a.seatId > b.seatId ? 1 : -1).forEach((seat, index) => {
+    if(seat.seatId > 0) {
+        if(seat.seatId + 1 !== allSeatIds[index+1].seatId){
+            console.warn('missing seat',seat.seatId + 1)
+        }
+    }
+})</code></pre>
+      </div>
+    </div>
+    <div class="row">
+      <div class="eight columns">&nbsp;</div>
+      <div class="four columns credits">
+        Created with ❤️ by <a href="https://twitter.com/davidlozzi" target="_blank">David
+          Lozzi</a><br /><br />
+        <a href="https://adventofcode.com/" target="_blank">Advent of Code</a><br />
+        CSS provided by <a href="http://getskeleton.com/" target="_blank">Skeleton</a></br>
+        Code highlighting provided by <a href="https://highlightjs.org/" target="_blank">highlight.js</a><br /><br />
+        See a problem? Want to share how you solved it? Something else? I want to hear it! <a
+          href="https://github.com/DavidLozzi/adventcode2020/issues" target="_blank">Share here!</a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

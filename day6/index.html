@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/png" href="../icon/adventcodelogo.png">
+  <!-- quick find/replace (day[\s\/-])5 -->
+  <title>Advent of Code - Day 6</title>
+
+  <!-- styling from getskeleton.com -->
+  <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="../styles/normalize.css">
+  <link rel="stylesheet" href="../styles/skeleton.css">
+  <link rel="stylesheet" href="../styles/custom.css">
+
+  <!--  syntax highlighting from highlight.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+
+  <script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+  </script>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <h2>Advent of Code, Day 6: Custom Customs</h2>
+        <a href="https://adventofcode.com/2020/day/6" target="_blank">Go to Day 6 Challenge</a> | <a
+          href="../index.html">Go to index</a><br />
+        I ran this code in the devtoolbar in Chrome, and the answers were simply outputted to the console.
+        <a href="https://davidlozzi.com/2020/12/05/advent-of-code-day-6/">Learn more about my solution</a>.
+
+        <h4>Part I</h4>
+        <div>"The form asks a series of 26 yes-or-no questions marked a through z. All you need to do is identify
+          the questions for which anyone in your group answers "yes"... For each of the people in their group, you
+          write down the questions for which they answer "yes", one per line... Another group asks for your help,
+          then another, and eventually you've collected answers from every group on the plane (your puzzle input).
+          Each group's answers are separated by a blank line, and within each group, each person's answers are on a
+          single line." <a href="https://adventofcode.com/2020/day/6" target="_blank">ref</a>
+        </div>
+        <pre><code class="js">var yesCounter = 0
+var answers = document.getElementsByTagName('pre')[0].innerText.replace(/\n\n/ig,'LOZZI').replace(/\n/ig,'').split('LOZZI')
+answers.forEach(a => {
+    yesCounter += new Set(a).size
+})
+console.log(yesCounter)</code></pre>
+        <h4>Part II</h4>
+        <div>"As you finish the last group's customs declaration, you notice that you misread one word in the
+          instructions:
+          You don't need to identify the questions to which anyone answered "yes"; you need to identify the questions to
+          which everyone answered "yes"!"
+          <a href="https://adventofcode.com/2020/day/6" target="_blank">ref</a></div>
+        <pre><code class="js">var groups = document.getElementsByTagName('pre')[0].innerText.split('\n\n')
+var sameAnswerCounter = 0
+groups.forEach(group => {
+    var answers = group.split('\n')
+    var firstAnswer = answers[0];
+    [...firstAnswer].forEach(f => {
+        sameAnswerCounter += answers.every(a => a.indexOf(f) > -1)
+    })
+})
+console.log(sameAnswerCounter)</code></pre>
+      </div>
+    </div>
+    <div class="row">
+      <div class="eight columns">&nbsp;</div>
+      <div class="four columns credits">
+        Created with ❤️ by <a href="https://twitter.com/davidlozzi" target="_blank">David
+          Lozzi</a><br /><br />
+        <a href="https://adventofcode.com/" target="_blank">Advent of Code</a><br />
+        CSS provided by <a href="http://getskeleton.com/" target="_blank">Skeleton</a></br>
+        Code highlighting provided by <a href="https://highlightjs.org/" target="_blank">highlight.js</a><br /><br />
+        See a problem? Want to share how you solved it? Something else? I want to hear it! <a
+          href="https://github.com/DavidLozzi/adventcode2020/issues" target="_blank">Share here!</a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

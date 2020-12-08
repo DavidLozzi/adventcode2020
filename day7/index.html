@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/png" href="../icon/adventcodelogo.png">
+  <!-- quick find/replace (day[\s\/-])5 -->
+  <title>Advent of Code - Day 7</title>
+
+  <!-- styling from getskeleton.com -->
+  <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="../styles/normalize.css">
+  <link rel="stylesheet" href="../styles/skeleton.css">
+  <link rel="stylesheet" href="../styles/custom.css">
+
+  <!--  syntax highlighting from highlight.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+
+  <script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+  </script>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <h2>Advent of Code, Day 7: Handy Haversacks</h2>
+        <a href="https://adventofcode.com/2020/day/7" target="_blank">Go to Day 7 Challenge</a> | <a
+          href="../index.html">Go to index</a><br />
+        I ran this code in the devtoolbar in Chrome, and the answers were simply outputted to the console.
+        <!-- <a href="https://davidlozzi.com/2020/12/05/advent-of-code-day-7/">Learn more about my solution</a>. -->
+
+        <h4>Part I</h4>
+        <div>"Due to recent aviation regulations, many rules (your puzzle input) are being enforced about bags and
+          their contents; bags must be color-coded and must contain specific quantities of other color-coded bags.
+          Apparently, nobody responsible for these regulations considered how long they would take to enforce!"
+          <a href="https://adventofcode.com/2020/day/7" target="_blank">ref</a>
+        </div>
+        <pre><code class="js">var rules = document.getElementsByTagName('pre')[0].innerText.split('\n')
+var countSet = new Set()
+
+var getBag = (childBag) => {
+    var bagReg = new RegExp(`contain[\\sa-z0-9,]*${childBag}`,'i')
+    rules
+        .filter(r => r.match(bagReg))
+        .forEach(r => {
+            var containingBag = r.match(/([a-z\s]*)\sbag[s]?\scontain/i)[1].trim()
+            countSet.add(containingBag)
+            getBag(containingBag)
+        })
+}
+
+getBag('shiny gold')
+console.log(countSet.size)</code></pre>
+        <h4>Part II</h4>
+        <div>"How many individual bags are required inside your single shiny gold bag?""
+          <a href="https://adventofcode.com/2020/day/7" target="_blank">ref</a></div>
+        <pre><code class="js">var rules = document.getElementsByTagName('pre')[0].innerText.split('\n')
+var countSet = new Set()
+
+var tree = []
+var getBag = (parentBag, count) => {
+    var bagReg = new RegExp(`${parentBag}\\sbag[s]?\\scontain`,'i')
+    return rules
+        .filter(r => r.match(bagReg))
+        .map(r => {
+            var childrenBags = r.split('contain')[1].split(',')
+            return childrenBags.map(c => {
+                var child = c.match(/([0-9]+)\s([a-z\s]*)\sbag/i)
+                if(child){
+                    tree.push({ count: Number(child[1]), total: (Number(child[1]) * count), bag: child[2], parentBag })
+                    getBag(child[2], (Number(child[1]) * count))
+                }
+            }).flat()
+        })
+        .flat()
+}
+
+getBag('shiny gold', 1)
+var bagCnt = 0
+tree.forEach(t => bagCnt += t.total)
+console.log(bagCnt)</code></pre>
+      </div>
+    </div>
+    <div class="row">
+      <div class="eight columns">&nbsp;</div>
+      <div class="four columns credits">
+        Created with ❤️ by <a href="https://twitter.com/davidlozzi" target="_blank">David
+          Lozzi</a><br /><br />
+        <a href="https://adventofcode.com/" target="_blank">Advent of Code</a><br />
+        CSS provided by <a href="http://getskeleton.com/" target="_blank">Skeleton</a></br>
+        Code highlighting provided by <a href="https://highlightjs.org/" target="_blank">highlight.js</a><br /><br />
+        See a problem? Want to share how you solved it? Something else? I want to hear it! <a
+          href="https://github.com/DavidLozzi/adventcode2020/issues" target="_blank">Share here!</a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

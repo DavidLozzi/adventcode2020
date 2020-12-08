@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/png" href="../icon/adventcodelogo.png">
+  <!-- quick find/replace (day[\s\/-])5 -->
+  <title>Advent of Code - Day 8</title>
+
+  <!-- styling from getskeleton.com -->
+  <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="../styles/normalize.css">
+  <link rel="stylesheet" href="../styles/skeleton.css">
+  <link rel="stylesheet" href="../styles/custom.css">
+
+  <!--  syntax highlighting from highlight.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+
+  <script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+  </script>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <h2>Advent of Code, Day 8: Handheld Halting</h2>
+        <a href="https://adventofcode.com/2020/day/8" target="_blank">Go to Day 8 Challenge</a> | <a
+          href="../index.html">Go to index</a><br />
+        I ran this code in the devtoolbar in Chrome, and the answers were simply outputted to the console.
+        <!-- <a href="https://davidlozzi.com/2020/12/05/advent-of-code-day-8/">Learn more about my solution</a>. -->
+
+        <h4>Part I</h4>
+        <div>"The boot code is represented as a text file with one instruction per line of text.
+          Each instruction consists of an operation (acc, jmp, or nop) and an argument (a signed
+          number like +4 or -20)."
+          <a href="https://adventofcode.com/2020/day/8" target="_blank">ref</a>
+        </div>
+        <pre><code class="js">var instructions = document.getElementsByTagName('pre')[0].innerText.split('\n')
+var accumulator = 0
+var stepIndex = 0
+var stepsCompleted = []
+
+var processStep = (index) => {
+    var cmd = instructions[index]
+
+    if(!stepsCompleted.some(s => s.command === cmd && s.index === index)){
+        var iArray = cmd.match(/([a-z]{3})\s([-+0-9]+)/i)
+        if(iArray){
+            var instruction = { command: cmd, index, operation: iArray[1], argument: Number(iArray[2]) } 
+            console.log(instruction)
+            switch (instruction.operation) {
+                case 'acc':
+                    accumulator += instruction.argument
+                    stepIndex += 1
+                    break;
+                case 'jmp':
+                    stepIndex += instruction.argument
+                    break;
+                case 'nop':
+                default:
+                    stepIndex += 1
+                    break;
+            }
+//             debugger
+            stepsCompleted.push(instruction)
+            processStep(stepIndex)
+        }
+    }
+}
+
+processStep(stepIndex)
+console.log(stepIndex, accumulator)</code></pre>
+        <h4>Part II</h4>
+        <div>"Somewhere in the program, either a jmp is supposed to be a nop, or a nop is
+          supposed to be a jmp. (No acc instructions were harmed in the corruption of this boot code.)"
+          <a href="https://adventofcode.com/2020/day/8" target="_blank">ref</a></div>
+        <pre><code class="js">var instructions = document.getElementsByTagName('pre')[0].innerText.trim().split('\n')
+var accumulator = 0
+var stepIndex = 0
+var stepsCompleted = []
+var swapped = []
+var didSwap = false
+
+var processStep = (index) => {
+    if(index < instructions.length) {
+        var cmd = instructions[index]
+        if(cmd) {
+          if(!stepsCompleted.some(s => s.command === cmd && s.index === index)){
+              var iArray = cmd.match(/([a-z]{3})\s([-+0-9]+)/i)
+              if(iArray){
+                var instruction = { command: cmd, index, operation: iArray[1], argument: Number(iArray[2]) } 
+                stepsCompleted.push(instruction)
+                  // console.log(instruction)
+                  switch (instruction.operation) {
+                      case 'acc':
+                          accumulator += instruction.argument
+                          stepIndex += 1
+                          break;
+                      case 'jmp':
+                          if(!didSwap && !swapped.some(s => s.command === cmd && s.index === index)) {
+                              // swap with nop, do nothing
+                              // debugger
+                              // console.log('swapped',instruction)
+                              didSwap = true
+                              swapped.push(instruction)
+                              stepIndex += 1
+                          } else {
+                              stepIndex += instruction.argument
+                              // console.log('not swapped',instruction)
+                          }
+                          break;
+                      case 'nop':
+                          if(!didSwap && !swapped.some(s => s.command === cmd && s.index === index)) {
+                              // swap with jmp, do jump
+                              // debugger
+                              // console.log('swapped',instruction)
+                              didSwap = true
+                              swapped.push(instruction)
+                              stepIndex += instruction.argument
+                          } else {
+                              stepIndex += 1
+                              // console.log('not swapped',instruction)
+                          }
+                          break;
+                      default:
+                        stepIndex += 1
+                          break;
+                  }
+                  // debugger
+                  setTimeout(() => processStep(stepIndex), 1)
+              } else {
+                console.error('invalid instructions at index', index)
+              }
+          } else {
+              //console.warn('looped, trying again', accumulator, swapped.length, swapped.slice(-1)[0])
+              accumulator = 0
+              stepIndex = 0
+              didSwap = false
+              stepsCompleted = []
+              // debugger
+              processStep(stepIndex)
+          }
+        }
+    } else {
+      console.error('total accumulator:', accumulator, 'index:', index)
+    }
+}
+
+processStep(stepIndex)</code></pre>
+      </div>
+    </div>
+    <div class="row">
+      <div class="eight columns">&nbsp;</div>
+      <div class="four columns credits">
+        Created with ❤️ by <a href="https://twitter.com/davidlozzi" target="_blank">David
+          Lozzi</a><br /><br />
+        <a href="https://adventofcode.com/" target="_blank">Advent of Code</a><br />
+        CSS provided by <a href="http://getskeleton.com/" target="_blank">Skeleton</a></br>
+        Code highlighting provided by <a href="https://highlightjs.org/" target="_blank">highlight.js</a><br /><br />
+        See a problem? Want to share how you solved it? Something else? I want to hear it! <a
+          href="https://github.com/DavidLozzi/adventcode2020/issues" target="_blank">Share here!</a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

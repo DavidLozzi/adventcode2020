@@ -18,6 +18,7 @@
     "react"
   ],
   "rules": {
-    "semi": 0
+    "semi": 0,
+    "no-loop-func": 0
   }
 }

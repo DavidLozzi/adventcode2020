@@ -1,0 +1,22 @@
+{
+  "name": "adventcode2020",
+  "version": "1.0.0",
+  "description": "Go to [https://davidlozzi.github.io/adventcode2020/](https://davidlozzi.github.io/adventcode2020/) to browse this repo. Go to issues above to share your thoughts, ideas, problems, or questions.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavidLozzi/adventcode2020.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DavidLozzi/adventcode2020/issues"
+  },
+  "homepage": "https://github.com/DavidLozzi/adventcode2020#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}

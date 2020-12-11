@@ -35,6 +35,7 @@ let previousSeats = [...seats]
 do {
   const newSeats = []
   seatsChanged = false
+  console.log(previousSeats)
   for(let row = 0; row < previousSeats.length; row += 1) {
     newSeats.push('')
     for(let col = 0; col < previousSeats[row].length; col += 1) {

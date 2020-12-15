@@ -5,7 +5,7 @@ for(let i = nums.length - 1; i <= 2020; i += 1) {
   var theNum = spokenNums[i]
   var earlierNums = spokenNums.slice(0,-1)
   if(earlierNums.some(s => s === theNum)) {
-    var lastIndex = earlierNums.map(s => s === theNum).lastIndexOf(true)
+    var lastIndex = earlierNums.lastIndexOf(theNum)
     spokenNums.push(i - lastIndex)
   } else {
     spokenNums.push(0)

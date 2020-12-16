@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/png" href="../icon/adventcodelogo.png">
+  <!-- quick find/replace (day[\s\/-]*)11|(12\/)11 with $1$212 -->
+  <title>Advent of Code - Day 16</title>
+
+  <!-- styling from getskeleton.com -->
+  <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="../styles/normalize.css">
+  <link rel="stylesheet" href="../styles/skeleton.css">
+  <link rel="stylesheet" href="../styles/custom.css">
+
+  <!--  syntax highlighting from highlight.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+
+  <script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+
+    var loading = true
+    const loadScripts = async () => {
+      const part1 = await fetch('https://raw.githubusercontent.com/DavidLozzi/adventcode2020/main/day16/part1.js').then(resp => resp.text()).then(t => t)
+      const part2 = await fetch('https://raw.githubusercontent.com/DavidLozzi/adventcode2020/main/day16/part2.js').then(resp => resp.text()).then(t => t)
+
+      document.getElementById('part1code').innerText = part1
+      document.getElementById('part2code').innerText = part2
+      loading = false
+    }
+  </script>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <h2>Advent of Code, Day 16: Ticket Translation</h2>
+        <a href="https://adventofcode.com/2020/day/16" target="_blank">Go to Day 16 Challenge</a> | <a
+          href="../index.html">Go to index</a><br />
+        You can now check out the
+        <a href="https://github.com/DavidLozzi/adventcode2020/blob/main/day16/">inputs and script files directly</a>
+        <!-- , or
+        as
+        always,
+        <a href="https://davidlozzi.com/2020/12/16/advent-of-code-day-16/">learn more about my solution</a> on my blog. -->
+
+        <h4>Part I</h4>
+        <pre><code class="js" id="part1code"></code></pre>
+        <h4>Part II</h4>
+        <pre><code class="js" id="part2code"></code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="eight columns">&nbsp;</div>
+    <div class="four columns credits">
+      Created with ❤️ by <a href="https://twitter.com/davidlozzi" target="_blank">David
+        Lozzi</a><br /><br />
+      <a href="https://adventofcode.com/" target="_blank">Advent of Code</a><br />
+      CSS provided by <a href="http://getskeleton.com/" target="_blank">Skeleton</a></br>
+      Code highlighting provided by <a href="https://highlightjs.org/" target="_blank">highlight.js</a><br /><br />
+      See a problem? Want to share how you solved it? Something else? I want to hear it! <a
+        href="https://github.com/DavidLozzi/adventcode2020/issues" target="_blank">Share here!</a>
+    </div>
+  </div>
+  </div>
+  <script>
+    loadScripts()
+  </script>
+</body>
+
+</html>

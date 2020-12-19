@@ -1,31 +1,43 @@
 const fs = require('fs');
-const buses = fs.readFileSync('./input.txt', 'utf-8').trim().split('\n')
+let notes = fs.readFileSync('./input.txt', 'utf-8').trim().split('\n');
 
-const busIds = buses[1].split(',')
+const busses = notes[1].split(',').map(b => b === 'x' ? -1 : parseInt(b));
 
-let nextTime = Number(busIds.filter(b => b !== 'x').sort((a, b) => Number(a) < Number(b) ? 1 : -1)[0])
+let minT = 0;
+let t = minT;
 
-console.log(new Date())
-let allDone = false
-let counter = 0
-while(!allDone) {
-  let theyAllMatch = true
-  let checkTime = nextTime
-  for(let i = 0; i < busIds.length; i += 1){
-    if(busIds[i] !== 'x') {
-      theyAllMatch = checkTime % busIds[i] === 0
-    }
-    checkTime += 1
-    if(!theyAllMatch) break;
-  }
-  if(theyAllMatch) {
-    console.log('The earliest we can depart is', nextTime)
-  }
+const lcmPrime = i => busses.filter(b => b > 0).slice(0, i).reduce((a, b) => a * b, 1);
 
-  allDone = theyAllMatch
-  nextTime += 1
+let inc = lcmPrime(1);
+let numMatch = 1;
 
-  counter += 1
-  counter % 100000000000 === 0 ? console.log(counter / 100000000000, 'trillion loops', new Date()) : null
-}
-console.log(new Date())
+const test = (t) => {
+	let localMatch = 0
+
+	for (var i = 0; i < busses.length; i++) {
+		if (busses[i] > 0) {
+			if ((t + i) % busses[i] === 0) {
+				// This is the critical section that ups the 
+				// increment as we get more and more matches
+				localMatch++;
+				if (localMatch > numMatch) {
+					numMatch++;
+					inc = lcmPrime(numMatch);
+				}
+			}
+			else {
+				return false;
+			}
+		}
+	}
+
+	return true;
+};
+
+// Find the first place to start
+while(t % inc !== 0) t++;
+
+// Update and increment
+while(!test(t)) t += inc;
+
+console.log('PART 2', t);

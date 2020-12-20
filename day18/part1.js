@@ -13,10 +13,10 @@ const basicMath = (equation) => {
   }
   return newMath
 }
+
 maths.forEach(math => {
   let reducedMath = math
 
-  // remove parenths in order
   while(reducedMath.indexOf('(') > -1) {
     const parenths = reducedMath.match(/\((?![0-9\s\*\+]*\()[0-9\s\+\*]*\)/ig)
     parenths.forEach(p => {
@@ -24,7 +24,6 @@ maths.forEach(math => {
     })
   }
 
-  // do the math, in order, left to right, NOT like normal math
   reducedMath = basicMath(reducedMath)
   console.log(reducedMath)
   total += Number(reducedMath)

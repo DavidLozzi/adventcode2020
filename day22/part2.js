@@ -1,7 +1,7 @@
 'use strict'
 
-const fs = require('fs');
-let data = fs.readFileSync('./input.txt', 'utf-8').trim().split('\n'); //.filter(d => typeof d === Number);
+const fs = require('fs')
+let data = fs.readFileSync('./input.txt', 'utf-8').trim().split('\n')
 
 const player1 = data.slice(1, data.indexOf('')).map(d => Number(d))
 const player2 = data.slice(data.indexOf('') + 2).map(d => Number(d))
@@ -102,4 +102,3 @@ const length = winner.length
 const score = winner.reduce((a, b, index) => a + ((length - index) * b), 0)
 
 console.log('The winning score is', score)
-console.log('35902 is too high')

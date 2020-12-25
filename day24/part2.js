@@ -58,20 +58,6 @@ data.forEach(row => {
   }
 })
 
-const getNeighborCount = (tile) => {
-  const [str, x, y] = tile.match(/x([\-0-9]*)y([\-0-9]*)/)
-  let greenCount = 0
-  
-  neighborPositions.forEach(dir => {
-    const neigh = getXYfromDir(Number(x), Number(y), dir)
-    const theTile = `x${neigh.x}y${neigh.y}`;
-    if(expandTiles.get(theTile)) {
-      if(expandTiles.get(theTile) === 'green') greenCount += 1
-    }
-  })
-    return greenCount
-}
-
 const neighborPositions = ['e', 'w', 'se', 'sw', 'ne', 'nw']
 for(let loop = 0; loop < 100; loop += 1) {
   greenCounter = 0
@@ -87,6 +73,20 @@ for(let loop = 0; loop < 100; loop += 1) {
       if(!tiles.get(theTile)) expandTiles.set(theTile, 'red')
     })
   })
+
+  const getNeighborCount = (tile) => {
+    const [str, x, y] = tile.match(/x([\-0-9]*)y([\-0-9]*)/)
+    let greenCount = 0
+    
+    neighborPositions.forEach(dir => {
+      const neigh = getXYfromDir(Number(x), Number(y), dir)
+      const theTile = `x${neigh.x}y${neigh.y}`;
+      if(expandTiles.get(theTile)) {
+        if(expandTiles.get(theTile) === 'green') greenCount += 1
+      }
+    })
+      return greenCount
+  }
 
   const nextDayTiles = new Map()
   expandTiles.forEach((value, key) => {

@@ -1,4 +1,3 @@
-
 const card = 15628416
 let cardloopSize = 0
 let answer = 1
@@ -20,7 +19,7 @@ while(answer !== door) {
   doorloopSize += 1
 }
 
-console.log(doorloopSize, 'card loopsize')
+console.log(doorloopSize, 'door loopsize')
 
 let encryption = 1
 for(let i = 0; i < cardloopSize; i ++){
